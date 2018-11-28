@@ -1,0 +1,70 @@
+{
+  "name": "vue-material-dashboard",
+  "version": "1.0.1",
+  "private": true,
+  "description": "Vue Material Dashboard",
+  "author": "dragosct <dragosc@creative-tim.com>",
+  "scripts": {
+    "serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "dev": "npm run serve"
+  },
+  "dependencies": {
+    "chartist": "0.11.0",
+    "consola": "^2.2.6",
+    "crypto-js": "^3.1.9-1",
+    "element-ui": "^2.4.9",
+    "google-maps": "3.2.1",
+    "koa": "^2.6.2",
+    "koa-body": "^4.0.4",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "mysql2": "^1.6.4",
+    "redis": "^2.8.0",
+    "sequelize": "^4.41.2",
+    "vue": "^2.5.16",
+    "vue-clickaway": "2.2.2",
+    "vue-material": "1.0.0-beta-8",
+    "vue-resource": "^1.5.1",
+    "vue-router": "3.0.1",
+    "vue-server-renderer": "^2.5.17",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "3.0.0-beta.15",
+    "@vue/cli-plugin-eslint": "3.0.0-beta.15",
+    "@vue/cli-service": "3.0.0-beta.15",
+    "@vue/eslint-config-standard": "3.0.0-rc.3",
+    "babel-plugin-component": "1.1.1",
+    "babel-plugin-module-resolver": "3.1.1",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "es6-promise": "4.2.4",
+    "lint-staged": "7.2.0",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.0.3",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
+}
