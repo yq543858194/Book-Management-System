@@ -88,38 +88,81 @@ export default {
     }
   },
   methods: {
-    updateUser() {
-      this.$http.post('http://localhost:5000/updateUser',{
-        username: this.username,
-        password: Crypto.MD5(this.password).toString(),
-        name: this.name,
-        school: this.school,
-        email: this.email,
-        phone: this.phone,
-        work: this.work,
-        description: this.description
-      }).then(data => {
-        if (data.body.code === 0) {
-          this.$notify(
-            {
-              message: data.body.msg,
-              icon: 'add_alert',
-              horizontalAlign: 'top',
-              verticalAlign: 'center',
-              type: 'success'
-            })
-          this.$store.dispatch('setUserProfile', data.body.user1);
-        } else {
-          this.$notify(
-            {
-              message: data.body.msg,
-              icon: 'add_alert',
-              horizontalAlign: 'top',
-              verticalAlign: 'center',
-              type: 'danger'
-            })
-        }
-      })
+    updateUser () {
+      let error = {
+        code: 0,
+        msg: ''
+      }
+      if (this.password.length === 0) {
+        error.code = -1
+        error.msg += '密码不能为空<br>'
+      }
+      if (this.email.length === 0) {
+        error.code = -1
+        error.msg += '邮箱不能为空<br>'
+      }
+      if (this.phone.length === 0) {
+        error.code = -1
+        error.msg += '电话号码不能为空<br>'
+      }
+      if (this.school.length === 0) {
+        error.code = -1
+        error.msg += '学校不能为空<br>'
+      }
+      if (this.work.length === 0) {
+        error.code = -1
+        error.msg += '工作不能为空<br>'
+      }
+      if (this.name.length === 0) {
+        error.code = -1
+        error.msg += '昵称不能为空<br>'
+      }
+      if (this.description.length === 0) {
+        error.code = -1
+        error.msg += '个人不能为空<br>'
+      }
+      if (error.code === 0) {
+        this.$http.post('http://localhost:5000/updateUser', {
+          username: this.username,
+          password: Crypto.MD5(this.password).toString(),
+          name: this.name,
+          school: this.school,
+          email: this.email,
+          phone: this.phone,
+          work: this.work,
+          description: this.description
+        }).then(data => {
+          if (data.body.code === 0) {
+            this.$notify(
+              {
+                message: data.body.msg,
+                icon: 'add_alert',
+                horizontalAlign: 'top',
+                verticalAlign: 'center',
+                type: 'success'
+              })
+            this.$store.dispatch('setUserProfile', data.body.user1)
+          } else {
+            this.$notify(
+              {
+                message: data.body.msg,
+                icon: 'add_alert',
+                horizontalAlign: 'top',
+                verticalAlign: 'center',
+                type: 'danger'
+              })
+          }
+        })
+      } else {
+        this.$notify(
+          {
+            message: error.msg,
+            icon: 'add_alert',
+            horizontalAlign: 'top',
+            verticalAlign: 'center',
+            type: 'danger'
+          })
+      }
     }
   }
 }

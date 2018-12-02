@@ -25,8 +25,8 @@ export default{
   components: {
     OwnBookTable
   },
-  created() {
-    this.$http.get('http://localhost:5000/getUser',{
+  created () {
+    this.$http.get('http://localhost:5000/getUser', {
       credentials: true
     }).then(data => {
       if (data.body.code !== 0 || data.body.user === null) {

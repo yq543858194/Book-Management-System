@@ -12,10 +12,22 @@
         </md-button>
 
         <div class="md-collapse">
+          <div class="searchTypeContainer">
+            <md-field>
+              <label for="searchType">搜索类型</label>
+              <md-select v-model="searchType" id="searchType">
+                <md-option value="ISBN">ISBN</md-option>
+                <md-option value="name">图书名</md-option>
+                <md-option value="author">图书作者</md-option>
+                <md-option value="description">图书描述</md-option>
+              </md-select>
+            </md-field>
+          </div>
           <div class="md-autocomplete">
-            <md-autocomplete class="search" v-model="selectedEmployee" :md-options="employees">
-              <label>搜索</label>
-            </md-autocomplete>
+            <md-field>
+              <label for="search">搜索</label>
+              <md-input v-model="search" @keyup.enter="searchAction()"></md-input>
+            </md-field>
           </div>
           <md-list>
             <md-list-item to="/">
@@ -40,12 +52,13 @@
 export default{
   data () {
     return {
-      selectedEmployee: null,
+      search: '',
       employees: [
         'JAVA EE框架开发',
         'JAVA核心技术',
         'BootStrap从入门到精通'
-      ]
+      ],
+      searchType: 'ISBN'
     }
   },
   methods: {
@@ -78,10 +91,59 @@ export default{
             })
         }
       })
+    },
+    searchAction () {
+      let error = {
+        code: 0,
+        msg: ''
+      }
+      if (this.search.length === 0) {
+        error.code = -1
+        error.msg +='请输入搜索关键字'
+      }
+      if (this.searchType.length === 0) {
+        error.code = -1
+        error.msg +='请选择搜索类型关键字'
+      }
+      if (error.code === 0) {
+        this.$http.post('http://localhost:5000/searchBook', {
+          type: this.searchType,
+          keyword: this.search
+        }).then(data => {
+          this.$notify({
+            message: data.body.msg,
+            icon: 'add_alert',
+            horizontalAlign: 'top',
+            verticalAlign: 'center',
+            type: 'success'
+          })
+          console.log(this.$route.path)
+          this.$store.dispatch('setIsSearch', true)
+          this.$store.dispatch('setBooks', data.body.books)
+          if (this.$route.path === '/bookList' || this.$route.path === '/table') {
+            this.$router.push({name: 'blank', params: {nextRoute: this.$route.path}})
+          } else {
+            this.$router.replace('/table')
+          }
+        })
+      } else {
+        this.$notify({
+          message: error.msg,
+          icon: 'add_alert',
+          horizontalAlign: 'top',
+          verticalAlign: 'center',
+          type: 'danger'
+        })
+      }
     }
   }
 }
 </script>
 
 <style lang="css">
+  .searchTypeContainer {
+    width: 100px;
+    display: inline-block;
+    margin-right: 20px;
+  }
 </style>

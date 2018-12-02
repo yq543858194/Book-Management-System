@@ -71,119 +71,119 @@
 </template>
 
 <script>
-  import cypto from 'crypto-js'
-  export default {
-      name: "login",
-      data () {
-        return {
-          username: '',
-          password: '',
-          rusername: '',
-          rpassword: '',
-          repassword: '',
-          radminCode: '',
-          remail: '',
-          isAdmin: false
-        }
-      },
-    methods: {
-      register() {
-          let message = {code: 0,msg: ''}
-          if (this.repassword !== this.rpassword) {
-            message.msg += '两次输入密码不一致<br>'
-            message.code = -1
-          }
-          if (this.rpassword === '') {
-            message.msg += '密码为必填项<br>'
-            message.code = -1
-          }
-          if (this.rusername === '') {
-            message.msg += '用户名为必填项<br>'
-            message.code = -1
-          }
-          if (this.remail === '') {
-            message.msg += '邮箱为必填项<br>'
-            message.code = -1
-          }
-          if (message.code === 0) {
-            this.$http.post('http://localhost:5000/register',{
-              rusername: this.rusername,
-              rpassword: cypto.MD5(this.rpassword).toString(),
-              remail: this.remail,
-              radminCode: this.radminCode
-            }).then(data => {
-              if (data.body.code === 0) {
-                this.$notify(
-                  {
-                    message: data.body.msg,
-                    icon: 'add_alert',
-                    horizontalAlign: 'top',
-                    verticalAlign: 'center',
-                    type: 'success'
-                  })
-              } else {
-                this.$notify(
-                  {
-                    message: data.body.msg,
-                    icon: 'add_alert',
-                    horizontalAlign: 'top',
-                    verticalAlign: 'center',
-                    type: 'danger'
-                  })
-              }
-            });
-          } else {
-            this.$notify(
-              {
-                message: message.msg,
-                icon: 'add_alert',
-                horizontalAlign: 'top',
-                verticalAlign: 'center',
-                type: 'danger'
-              })
-          }
-        },
-      login() {
-        let message = {code: 0,msg: ""}
-        if (this.username === '') {
-          message.code = -1;
-          message.msg += '用户名不能为空<br>'
-        }
-        if (this.password === '') {
-          message.code = -1;
-          message.msg += '密码不能为空<br>'
-        }
-        if (message.code === 0) {
-          this.$http.post('http://localhost:5000/login', {
-            username: this.username,
-            password: cypto.MD5(this.password).toString()
-          },{
-            credentials: true
-          }).then(data => {
+import cypto from 'crypto-js'
+export default {
+  name: 'login',
+  data () {
+    return {
+      username: '',
+      password: '',
+      rusername: '',
+      rpassword: '',
+      repassword: '',
+      radminCode: '',
+      remail: '',
+      isAdmin: false
+    }
+  },
+  methods: {
+    register () {
+      let message = { code: 0, msg: '' }
+      if (this.repassword !== this.rpassword) {
+        message.msg += '两次输入密码不一致<br>'
+        message.code = -1
+      }
+      if (this.rpassword === '') {
+        message.msg += '密码为必填项<br>'
+        message.code = -1
+      }
+      if (this.rusername === '') {
+        message.msg += '用户名为必填项<br>'
+        message.code = -1
+      }
+      if (this.remail === '') {
+        message.msg += '邮箱为必填项<br>'
+        message.code = -1
+      }
+      if (message.code === 0) {
+        this.$http.post('http://localhost:5000/register', {
+          rusername: this.rusername,
+          rpassword: cypto.MD5(this.rpassword).toString(),
+          remail: this.remail,
+          radminCode: this.radminCode
+        }).then(data => {
+          if (data.body.code === 0) {
             this.$notify(
               {
                 message: data.body.msg,
                 icon: 'add_alert',
                 horizontalAlign: 'top',
                 verticalAlign: 'center',
-                type: 'info'
-              });
-            this.$store.dispatch('setUserProfile', data.body.user)
-            this.$router.push('/table');
+                type: 'success'
+              })
+          } else {
+            this.$notify(
+              {
+                message: data.body.msg,
+                icon: 'add_alert',
+                horizontalAlign: 'top',
+                verticalAlign: 'center',
+                type: 'danger'
+              })
+          }
+        })
+      } else {
+        this.$notify(
+          {
+            message: message.msg,
+            icon: 'add_alert',
+            horizontalAlign: 'top',
+            verticalAlign: 'center',
+            type: 'danger'
           })
-        } else {
+      }
+    },
+    login () {
+      let message = { code: 0, msg: '' }
+      if (this.username === '') {
+        message.code = -1
+        message.msg += '用户名不能为空<br>'
+      }
+      if (this.password === '') {
+        message.code = -1
+        message.msg += '密码不能为空<br>'
+      }
+      if (message.code === 0) {
+        this.$http.post('http://localhost:5000/login', {
+          username: this.username,
+          password: cypto.MD5(this.password).toString()
+        }, {
+          credentials: true
+        }).then(data => {
           this.$notify(
             {
-              message: message.msg,
+              message: data.body.msg,
               icon: 'add_alert',
               horizontalAlign: 'top',
               verticalAlign: 'center',
               type: 'info'
             })
-        }
+          this.$store.dispatch('setUserProfile', data.body.user)
+          this.$router.push('/table')
+        })
+      } else {
+        this.$notify(
+          {
+            message: message.msg,
+            icon: 'add_alert',
+            horizontalAlign: 'top',
+            verticalAlign: 'center',
+            type: 'info'
+          })
       }
     }
   }
+}
 </script>
 
 <style scoped lang="scss" rel="stylesheet/scss">

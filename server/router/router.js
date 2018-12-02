@@ -2,10 +2,11 @@ const Router = require('koa-router');
 const Redis = require('redis');
 const fs = require('fs');
 const path = require('path');
-const {User, Book, Notify} = require('../model/Model.js');
+const {User, Book} = require('../model/Model.js');
 const crypto = require('crypto-js');
 const redis = Redis.createClient(6379,'localhost',{});
 const adminCode = require('../pass/admin.js');
+const Op = require('sequelize').Op;
 
 const router = new Router();
 
@@ -269,6 +270,32 @@ router.post('/deleteBook', async ctx => {
     ctx.body = {
       code: -1,
       msg: '删除失败'
+    }
+  }
+});
+
+router.post('/searchBook', async ctx => {
+  let keyword = ctx.request.body.keyword;
+  let type = ctx.request.body.type;
+  let condition = {};
+  condition[type] = {
+    [Op.like]: '%'+keyword+'%'
+  };
+  console.log(condition);
+  let books = await Book.findAll({
+    where: condition
+  });
+  if (books !== null && books !== undefined) {
+    ctx.body = {
+      code: 0,
+      msg: '查找成功',
+      books
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: '查找失败',
+      books: null
     }
   }
 });

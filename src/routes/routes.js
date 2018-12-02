@@ -4,6 +4,7 @@ import UserProfile from '@/pages/UserProfile.vue'
 import TableList from '@/pages/TableList.vue'
 import Login from '@/pages/login.vue'
 import OwnList from '@/pages/OwnBookList.vue'
+import blank from '@/pages/blank.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
         path: 'bookList',
         name: '图书管理列表',
         component: OwnList
+      },
+      {
+        path: 'blank',
+        name: 'blank',
+        component: blank
       }
     ]
   }

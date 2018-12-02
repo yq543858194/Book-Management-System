@@ -26,15 +26,16 @@ export default {
   },
   methods: {
     fileChange () {
+      console.log(this.$refs.avatarUpload.firstChild.firstChild.innerHTML)
       this.$refs.avatarUpload.click()
     },
     fileUpload () {
       if (this.$refs.avatarUpload.files[0] !== undefined) {
         let formData = new FormData()
-        formData.append('avatar',this.$refs.avatarUpload.files[0]);
-        formData.append('username',this.$store.state.username);
+        formData.append('avatar', this.$refs.avatarUpload.files[0])
+        formData.append('username', this.$store.state.username)
         this.$http.post('http://localhost:5000/uploadAvatar', formData, {
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: { 'Content-Type': 'multipart/form-data' },
           credentials: true
         }).then(data => {
           if (data.body.code === 0) {
@@ -60,7 +61,6 @@ export default {
           }
         })
       }
-
     }
   }
 }

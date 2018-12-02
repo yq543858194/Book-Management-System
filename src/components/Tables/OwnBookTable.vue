@@ -67,20 +67,25 @@ export default {
   },
   mounted () {
     let self = this
-    this.$http.get('http://localhost:5000/getAllBooks').then(data => {
-      if (data.body.code === 0) {
-        self.books = data.body.books
-      } else {
-        self.$notify(
-          {
-            message: data.body.msg,
-            icon: 'add_alert',
-            horizontalAlign: 'top',
-            verticalAlign: 'center',
-            type: 'danger'
-          })
-      }
-    })
+    if (self.$store.state.isSearch) {
+      self.books = self.$store.state.books
+      self.$store.dispatch('setIsSearch', false)
+    } else {
+      this.$http.get('http://localhost:5000/getAllBooks').then(data => {
+        if (data.body.code === 0) {
+          self.books = data.body.books
+        } else {
+          self.$notify(
+            {
+              message: data.body.msg,
+              icon: 'add_alert',
+              horizontalAlign: 'top',
+              verticalAlign: 'center',
+              type: 'danger'
+            })
+        }
+      })
+    }
   },
   methods: {
     deleteBook (ISBN) {
@@ -129,66 +134,128 @@ export default {
       }
     },
     createBook (ISBN) {
+      let error = {
+        code: 0,
+        msg: ''
+      }
       let self = this
       let book = this.books.filter(item => item.ISBN === ISBN)
-      this.$http.post('http://localhost:5000/createBook', {
-        ISBN: book[0].ISBN,
-        name: book[0].name,
-        author: book[0].author,
-        description: book[0].description
-      }).then(data => {
-        if (data.body.code === 0) {
-          self.$notify(
-            {
-              message: data.body.msg,
-              icon: 'add_alert',
-              horizontalAlign: 'top',
-              verticalAlign: 'center',
-              type: 'success'
-            })
-          book.isCreate = false
-          self.edit = false
-        } else {
-          self.$notify(
-            {
-              message: data.body.msg,
-              icon: 'add_alert',
-              horizontalAlign: 'top',
-              verticalAlign: 'center',
-              type: 'danger'
-            })
-        }
-      })
+      if (book[0].ISBN.length === 0) {
+        error.code = -1
+        error.msg += '图书编号不能为空<br>'
+      }
+      if (book[0].name.length === 0) {
+        error.code = -1
+        error.msg += '图书名不能为空<br>'
+      }
+      if (book[0].ISBN.length === 0) {
+        error.code = -1
+        error.msg += '图书作者不能为空<br>'
+      }
+      if (book[0].ISBN.length === 0) {
+        error.code = -1
+        error.msg += '图书简介不能为空<br>'
+      }
+      if (error.code === 0) {
+        this.$http.post('http://localhost:5000/createBook', {
+          ISBN: book[0].ISBN,
+          name: book[0].name,
+          author: book[0].author,
+          description: book[0].description
+        }).then(data => {
+          if (data.body.code === 0) {
+            self.$notify(
+              {
+                message: data.body.msg,
+                icon: 'add_alert',
+                horizontalAlign: 'top',
+                verticalAlign: 'center',
+                type: 'success'
+              })
+            book.isCreate = false
+            self.edit = false
+          } else {
+            self.$notify(
+              {
+                message: data.body.msg,
+                icon: 'add_alert',
+                horizontalAlign: 'top',
+                verticalAlign: 'center',
+                type: 'danger'
+              })
+          }
+        })
+      } else {
+        self.$notify(
+          {
+            message: error.msg,
+            icon: 'add_alert',
+            horizontalAlign: 'top',
+            verticalAlign: 'center',
+            type: 'danger'
+          })
+      }
     },
     updateBook (ISBN) {
+      let error = {
+        code: 0,
+        msg: ''
+      }
       let self = this
       let book = self.books.filter(item => item.ISBN === ISBN)
-      self.$http.post('http://localhost:5000/updateBook', {
-        ISBN: book[0].ISBN,
-        name: book[0].name,
-        author: book[0].author,
-        description: book[0].description
-      }).then(data => {
-        if (data.body.code === 0) {
-          self.$notify(
-            {
-              message: data.body.msg,
-              icon: 'add_alert',
-              horizontalAlign: 'top',
-              verticalAlign: 'center',
-              type: 'success'
-            })
-        } else {
-          self.$notify(
-            {
-              message: data.body.msg,
-              icon: 'add_alert',
-              horizontalAlign: 'top',
-              verticalAlign: 'center',
-              type: 'danger'
-            })
-        }
-      })
+      if (book[0].ISBN.length === 0) {
+        error.code = -1
+        error.msg += '图书编号不能为空<br>'
+      }
+      if (book[0].name.length === 0) {
+        error.code = -1
+        error.msg += '图书名不能为空<br>'
+      }
+      if (book[0].ISBN.length === 0) {
+        error.code = -1
+        error.msg += '图书作者不能为空<br>'
+      }
+      if (book[0].ISBN.length === 0) {
+        error.code = -1
+        error.msg += '图书简介不能为空<br>'
+      }
+      if (error.code === 0) {
+        self.$http.post('http://localhost:5000/updateBook', {
+          ISBN: book[0].ISBN,
+          name: book[0].name,
+          author: book[0].author,
+          description: book[0].description
+        }).then(data => {
+          if (data.body.code === 0) {
+            self.$notify(
+              {
+                message: data.body.msg,
+                icon: 'add_alert',
+                horizontalAlign: 'top',
+                verticalAlign: 'center',
+                type: 'success'
+              })
+          } else {
+            self.$notify(
+              {
+                message: data.body.msg,
+                icon: 'add_alert',
+                horizontalAlign: 'top',
+                verticalAlign: 'center',
+                type: 'danger'
+              })
+          }
+        })
+      } else {
+        self.$notify(
+          {
+            message: error.msg,
+            icon: 'add_alert',
+            horizontalAlign: 'top',
+            verticalAlign: 'center',
+            type: 'danger'
+          })
+      }
     }
   }
 }

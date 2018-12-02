@@ -31,7 +31,7 @@ Vue.use(GlobalComponents)
 Vue.use(GlobalDirectives)
 Vue.use(Notifications)
 
-Vue.http.options.emulateJSON = true;
+Vue.http.options.emulateJSON = true
 
 // global library setup
 Object.defineProperty(Vue.prototype, '$Chartist', {
@@ -47,12 +47,12 @@ new Vue({
   router,
   store,
   created () {
-    if (sessionStorage.getItem("store")) {
-      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem("store"))))
+    if (sessionStorage.getItem('store')) {
+      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem('store'))))
     }
 
-    window.addEventListener("beforeunload", () => {
-      sessionStorage.setItem("store", JSON.stringify(this.$store.state))
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
     })
   },
   data: {

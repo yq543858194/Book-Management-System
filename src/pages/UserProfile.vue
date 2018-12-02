@@ -26,20 +26,20 @@ export default{
     EditProfileForm,
     UserCard
   },
-  data() {
+  data () {
     return {
       user: {}
     }
   },
-  async created() {
-    let self = this;
-    await this.$http.get('http://localhost:5000/getUser',{
+  async created () {
+    let self = this
+    await this.$http.get('http://localhost:5000/getUser', {
       credentials: true
     }).then(data => {
       if (data.body.code !== 0 || data.body.user === null) {
         this.$router.push('/login')
       } else {
-        self.user = data.body.user;
+        self.user = data.body.user
       }
     })
   }

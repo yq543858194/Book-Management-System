@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
@@ -15,7 +15,10 @@ export default new Vuex.Store({
     work: '',
     avatar: '',
     description: '',
-    adminCode: ''
+    adminCode: '',
+    isSearch: false,
+    books: [],
+    updateActiveTemplateId: ''
   },
   mutations: {
     setUserProfile (state, user) {
@@ -33,6 +36,15 @@ export default new Vuex.Store({
     },
     setAvatarName (state, name) {
       state.avatar = name
+    },
+    setIsSearch (state, name) {
+      state.isSearch = name
+    },
+    setBooks (state, name) {
+      state.books = name
+    },
+    setUpdateActiveTemplateId (state, name) {
+      state.updateActiveTemplateId = name
     }
   },
   actions: {
@@ -41,6 +53,15 @@ export default new Vuex.Store({
     },
     setAvatarName (ctx, name) {
       ctx.commit('setAvatarName', name)
+    },
+    setIsSearch (ctx, name) {
+      ctx.commit('setIsSearch', name)
+    },
+    setBooks (ctx, name) {
+      ctx.commit('setBooks', name)
+    },
+    setUpdateActiveTemplateId (ctx, name) {
+      ctx.commit('updateActiveTemplateId', name)
     }
   }
 })

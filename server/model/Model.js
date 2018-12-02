@@ -51,8 +51,6 @@ const User = connector.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   }
-},{
-  underscored: true
 });
 
 const Book = connector.define('book', {
@@ -84,20 +82,6 @@ const Book = connector.define('book', {
   }
 });
 
-const Notify = connector.define('notify', {
-  uuid: {
-    type: Sequelize.UUID,
-    primaryKey: true,
-    allowNull: false
-  },
-  content: {
-    type: Sequelize.TEXT,
-    allowNull: false
-  }
-});
-
-Notify.belongsTo(User);
-
 connector.sync({force: false}).then(() => {
   console.log('database sync success');
 }).catch((err) => {
@@ -106,6 +90,5 @@ connector.sync({force: false}).then(() => {
 
 module.exports = {
   User,
-  Book,
-  Notify
+  Book
 };
