@@ -33,9 +33,11 @@ export default{
   },
   async created () {
     let self = this
+    this.$store.dispatch('setLoading', true)
     await this.$http.get('http://localhost:5000/getUser', {
       credentials: true
     }).then(data => {
+      this.$store.dispatch('setLoading', false)
       if (data.body.code !== 0 || data.body.user === null) {
         this.$router.push('/login')
       } else {

@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     fileChange () {
-      console.log(this.$refs.avatarUpload.firstChild.firstChild.innerHTML)
       this.$refs.avatarUpload.click()
     },
     fileUpload () {
@@ -34,10 +33,12 @@ export default {
         let formData = new FormData()
         formData.append('avatar', this.$refs.avatarUpload.files[0])
         formData.append('username', this.$store.state.username)
+        this.$store.dispatch('setLoading', true)
         this.$http.post('http://localhost:5000/uploadAvatar', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
           credentials: true
         }).then(data => {
+          this.$store.dispatch('setLoading', false)
           if (data.body.code === 0) {
             this.$notify(
               {

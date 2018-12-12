@@ -18,7 +18,8 @@ export default new Vuex.Store({
     adminCode: '',
     isSearch: false,
     books: [],
-    updateActiveTemplateId: ''
+    updateActiveTemplateId: '',
+    loading: false
   },
   mutations: {
     setUserProfile (state, user) {
@@ -45,6 +46,9 @@ export default new Vuex.Store({
     },
     setUpdateActiveTemplateId (state, name) {
       state.updateActiveTemplateId = name
+    },
+    setLoading (state, name) {
+      state.loading = name
     }
   },
   actions: {
@@ -62,6 +66,9 @@ export default new Vuex.Store({
     },
     setUpdateActiveTemplateId (ctx, name) {
       ctx.commit('updateActiveTemplateId', name)
+    },
+    setLoading (ctx, name) {
+      ctx.commit('setLoading', name)
     }
   }
 })

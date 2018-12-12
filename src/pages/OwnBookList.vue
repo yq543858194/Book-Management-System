@@ -26,9 +26,11 @@ export default{
     OwnBookTable
   },
   created () {
+    this.$store.dispatch('setLoading', true)
     this.$http.get('http://localhost:5000/getUser', {
       credentials: true
     }).then(data => {
+      this.$store.dispatch('setLoading', false)
       if (data.body.code !== 0 || data.body.user === null) {
         this.$router.push('/login')
       } else if (data.body.user.adminCode === '0') {

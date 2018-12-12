@@ -122,6 +122,7 @@ export default {
         error.msg += '个人不能为空<br>'
       }
       if (error.code === 0) {
+        this.$store.dispatch('setLoading', true)
         this.$http.post('http://localhost:5000/updateUser', {
           username: this.username,
           password: Crypto.MD5(this.password).toString(),
@@ -132,6 +133,7 @@ export default {
           work: this.work,
           description: this.description
         }).then(data => {
+          this.$store.dispatch('setLoading', false)
           if (data.body.code === 0) {
             this.$notify(
               {

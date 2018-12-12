@@ -3,6 +3,7 @@
     <div class="md-toolbar-row">
       <div class="md-toolbar-section-start">
         <h3 class="md-title">{{$route.name}}</h3>
+        <md-progress-spinner :md-diameter="20" :md-stroke="3" md-mode="indeterminate" v-if="$store.state.loading"></md-progress-spinner>
       </div>
       <div class="md-toolbar-section-end">
         <md-button class="md-just-icon md-simple md-toolbar-toggle" :class="{toggled: $sidebar.showSidebar}" @click="toggleSidebar">
@@ -67,6 +68,7 @@ export default{
     },
     logout () {
       let self = this
+      this.$store.dispatch('setLoading', true)
       this.$http.get('http://localhost:5000/logout', {
         credentials: true
       }).then(data => {
@@ -90,6 +92,7 @@ export default{
               type: 'danger'
             })
         }
+        this.$store.dispatch('setLoading', false)
       })
     },
     searchAction () {
@@ -99,17 +102,19 @@ export default{
       }
       if (this.search.length === 0) {
         error.code = -1
-        error.msg +='请输入搜索关键字'
+        error.msg += '请输入搜索关键字'
       }
       if (this.searchType.length === 0) {
         error.code = -1
-        error.msg +='请选择搜索类型关键字'
+        error.msg += '请选择搜索类型关键字'
       }
       if (error.code === 0) {
+        this.$store.dispatch('setLoading', true)
         this.$http.post('http://localhost:5000/searchBook', {
           type: this.searchType,
           keyword: this.search
         }).then(data => {
+          this.$store.dispatch('setLoading', false)
           this.$notify({
             message: data.body.msg,
             icon: 'add_alert',
@@ -121,7 +126,7 @@ export default{
           this.$store.dispatch('setIsSearch', true)
           this.$store.dispatch('setBooks', data.body.books)
           if (this.$route.path === '/bookList' || this.$route.path === '/table') {
-            this.$router.push({name: 'blank', params: {nextRoute: this.$route.path}})
+            this.$router.push({ name: 'blank', params: { nextRoute: this.$route.path } })
           } else {
             this.$router.replace('/table')
           }

@@ -106,12 +106,14 @@ export default {
         message.code = -1
       }
       if (message.code === 0) {
+        this.$store.dispatch('setLoading', true)
         this.$http.post('http://localhost:5000/register', {
           rusername: this.rusername,
           rpassword: cypto.MD5(this.rpassword).toString(),
           remail: this.remail,
           radminCode: this.radminCode
         }).then(data => {
+          this.$store.dispatch('setLoading', false)
           if (data.body.code === 0) {
             this.$notify(
               {
@@ -154,12 +156,14 @@ export default {
         message.msg += '密码不能为空<br>'
       }
       if (message.code === 0) {
+        this.$store.dispatch('setLoading', true)
         this.$http.post('http://localhost:5000/login', {
           username: this.username,
           password: cypto.MD5(this.password).toString()
         }, {
           credentials: true
         }).then(data => {
+          this.$store.dispatch('setLoading', false)
           this.$notify(
             {
               message: data.body.msg,

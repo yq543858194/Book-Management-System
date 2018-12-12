@@ -32,7 +32,9 @@ export default {
       self.books = self.$store.state.books
       self.$store.dispatch('setIsSearch', false)
     } else {
+      this.$store.dispatch('setLoading', true)
       this.$http.get('http://localhost:5000/getAllBooks').then(data => {
+        this.$store.dispatch('setLoading', false)
         if (data.body.code === 0) {
           this.books = data.body.books
         } else {

@@ -71,7 +71,9 @@ export default {
       self.books = self.$store.state.books
       self.$store.dispatch('setIsSearch', false)
     } else {
+      this.$store.dispatch('setLoading', true)
       this.$http.get('http://localhost:5000/getAllBooks').then(data => {
+        this.$store.dispatch('setLoading', false)
         if (data.body.code === 0) {
           self.books = data.body.books
         } else {
@@ -90,9 +92,11 @@ export default {
   methods: {
     deleteBook (ISBN) {
       let self = this
+      this.$store.dispatch('setLoading', true)
       self.$http.post('http://localhost:5000/deleteBook', {
         ISBN: ISBN
       }).then(data => {
+        this.$store.dispatch('setLoading', false)
         if (data.body.code === 0) {
           self.$notify(
             {
@@ -157,12 +161,14 @@ export default {
         error.msg += '图书简介不能为空<br>'
       }
       if (error.code === 0) {
+        this.$store.dispatch('setLoading', true)
         this.$http.post('http://localhost:5000/createBook', {
           ISBN: book[0].ISBN,
           name: book[0].name,
           author: book[0].author,
           description: book[0].description
         }).then(data => {
+          this.$store.dispatch('setLoading', false)
           if (data.body.code === 0) {
             self.$notify(
               {
@@ -220,12 +226,14 @@ export default {
         error.msg += '图书简介不能为空<br>'
       }
       if (error.code === 0) {
+        this.$store.dispatch('setLoading', true)
         self.$http.post('http://localhost:5000/updateBook', {
           ISBN: book[0].ISBN,
           name: book[0].name,
           author: book[0].author,
           description: book[0].description
         }).then(data => {
+          this.$store.dispatch('setLoading', false)
           if (data.body.code === 0) {
             self.$notify(
               {
